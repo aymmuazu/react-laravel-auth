@@ -16,6 +16,11 @@ const Dashboard = () => {
     dispatch(getCurrentUser());
   }, [dispatch, navigate]);
 
+  useEffect(() => {
+    const app_name = process.env.APP_NAME;
+    document.title = `Dashboard | ${app_name}`;
+  }, [])
+
   const handleLogout = (event) => {
     event.preventDefault();
     dispatch(logout()).then(() => {

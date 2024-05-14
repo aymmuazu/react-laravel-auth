@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 import { getCurrentUser, login } from '../Store/reducer/auth';
@@ -18,8 +18,16 @@ const Login = () => {
   const [errorPending, setErrorPending] = useState(false)
   const [disabledButton, setDisableButton] = useState(false);
 
+  useEffect(() => {
+    const app_name = process.env.APP_NAME;
+    document.title = `Login | ${app_name}`;
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setButtonMessage('Processing...');
+    setDisableButton(true);
     
     if (email == '' || password == '') {
       setError(true);
@@ -98,7 +106,7 @@ const Login = () => {
         </div>
 
         <div className='mt-2'>
-            <button type='submit' className='bg-blue-500 px-2 py-4 text-white rounded font-bold w-full hover:bg-blue-700'>
+            <button type='submit' disabled={disabledButton ? true : false} className='bg-blue-500 px-2 py-4 text-white rounded font-bold w-full hover:bg-blue-700'>
                 {buttonMessage}
             </button>
         </div>

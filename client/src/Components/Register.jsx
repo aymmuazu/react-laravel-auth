@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom' 
 import { register } from '../Store/reducer/auth';
@@ -18,6 +18,11 @@ const Register = () => {
   const [errorPending, setErrorPending] = useState(false)
   const [buttonMessage, setButtonMessage] = useState('Register');
   const [disabledButton, setDisableButton] = useState(false);
+
+  useEffect(() => {
+    const app_name = process.env.APP_NAME;
+    document.title = `Register | ${app_name}`;
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault('disabled');
