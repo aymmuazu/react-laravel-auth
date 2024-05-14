@@ -9,9 +9,11 @@ const initialState = {
     user: null
 };
 
+const api_url = process.env.API_URL;
+
 export const register = createAsyncThunk('auth/register', async (userData, thinkAPI) => {
     try {
-        const response = await axios.post('http://localhost:8000/api/register', userData);
+        const response = await axios.post(`${api_url}/register`, userData);
         return response.data;
     } catch (err) {
         return thinkAPI.rejectWithValue(err.response.data);
@@ -21,7 +23,7 @@ export const register = createAsyncThunk('auth/register', async (userData, think
 
 export const login = createAsyncThunk('auth/login', async (userData, thinkAPI) => {
     try {
-        const response = await axios.post('http://localhost:8000/api/login', userData);
+        const response = await axios.post(`${api_url}/login`, userData);
         return response.data;
     } catch (error) {
         return thinkAPI.rejectWithValue(err);
@@ -31,7 +33,7 @@ export const login = createAsyncThunk('auth/login', async (userData, thinkAPI) =
 export const getCurrentUser = createAsyncThunk('auth/getCurrentUser', async (_, thunkAPI) => {
     try {
         const token = localStorage.getItem('accessToken') ?? "";
-        const response = await axios.get('http://localhost:8000/api/me', {
+        const response = await axios.get(`${api_url}/me`, {
             headers: {
                 Authorization: 'Bearer' + token
             }
