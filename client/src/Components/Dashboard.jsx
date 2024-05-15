@@ -2,24 +2,20 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCurrentUser, logout } from '../Store/reducer/auth';
+import Logout from './Logout';
+import AppTitle from './AppTitle';
+import useUserData from './userData';
 
 const Dashboard = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  useUserData();
+
+  AppTitle({ title: 'Dashboard' })
 
   const userData = useSelector(state => state.auth.user);
   const isLoading = useSelector(state => state.auth.isLoading);
-  const isRejected = useSelector(state => state.auth.isRejected);
-
-  useEffect(() => {
-    dispatch(getCurrentUser());
-  }, [dispatch, navigate]);
-
-  useEffect(() => {
-    const app_name = process.env.APP_NAME;
-    document.title = `Dashboard | ${app_name}`;
-  }, [])
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -28,12 +24,7 @@ const Dashboard = () => {
     });
   }
 
-  if(isRejected){
-    localStorage.removeItem('accessToken');
-    navigate('/login');
-  }
-  
-  else if (userData == null && isLoading) {
+  if (userData == null && isLoading) {
     return(
       <div className='bg-white px-5 py-5'> 
         <p className='bg-gray-100 px-4 py-4 font-bold'>Loading....</p>        
@@ -48,21 +39,18 @@ const Dashboard = () => {
           <div>
             <h2 className='text-2xl font-bold text-center'>Dashboard</h2>
             <p className='mt-3'>Welcome Back, {name}!</p>
-            <p className='font-bold'>
+            <div className='font-bold'>
               <span className='block'>{email}</span>
               <Link to="/dashboard/profile" className='bg-blue-500 px-2 py-3 mt-3 text-white font-bold rounded block text-center'>
-                Edit Profile
+                Profile
               </Link>
 
               <Link to="/dashboard/password" className='bg-red-800 px-2 py-3 mt-3 text-white font-bold rounded block text-center'>
                 Change Password
               </Link>
 
-
-              <Link onClick={handleLogout} className='bg-red-500 px-2 py-3 mt-3 text-white font-bold rounded block text-center'>
-                Logout
-              </Link>
-            </p>
+              <Logout />
+            </div>
           </div>
       
       </div>

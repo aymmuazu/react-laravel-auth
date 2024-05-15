@@ -5,19 +5,24 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MeController extends Controller
+class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api']);
+        return $this->middleware(['auth:api']);
     }
 
     public function __invoke(Request $request)
     {
         $user = $request->user();
+        
+        auth()->user()->update([
+            'name' => $request->input('inputname'),
+            'email' => $request->input('inputemail')
+        ]);
 
         return response()->json([
-            'message' => 'User information retrived',
+            'message' => 'User profile updated.',
             'data' => [
                 'name' => $user->name,
                 'email' => $user->email,

@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Dashboard\LogoutController;
+use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\PasswordController;
 
 Route::group(['middleware' => 'api', 'prefix' => ''], function () {
     Route::get('/', HomeController::class);
@@ -19,5 +21,8 @@ Route::group(['middleware' => 'api', 'prefix' => ''], function () {
     //Authenticated user, UserData, Profile, Password Etc.
 
     Route::get('/me', MeController::class);
+    Route::post('/dashboard/profile', ProfileController::class);
+    Route::post('/dashboard/password', PasswordController::class);
+
     Route::get('/logout', LogoutController::class);
 });
